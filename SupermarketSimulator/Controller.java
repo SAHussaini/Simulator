@@ -14,7 +14,9 @@ public class Controller
     private ArrayList<Customer> customersInQueue;
     private ArrayList<Customer> customersInShop;
     private int time;
-    private HashMap<Tuple<Integer>, String> entryReg; //Java does not have an in-built way to make a map with the keys as tuples, so we will require the input to be in a certain format (can consider adding tuple class later)
+    private HashMap<Tuple<Integer>, String> entryReg;
+    ArrayList<Tuple<Integer>> timeBounds;//
+    ArrayList<String> allowedAges;// ONLY LIKE THIS BECAUSE OF BLUEJ GUI
     private FileWriter writer;
 
     /**
@@ -25,7 +27,7 @@ public class Controller
         entryReg = new HashMap<>();
         ArrayList<Tuple<Integer>> timeBounds = new ArrayList<>();
         ArrayList<String> allowedAges = new ArrayList<>();
-
+        
         if(timeBounds.size() == allowedAges.size()) {
             for(int i = 0; i < timeBounds.size(); i++)   {
                 entryReg.put(timeBounds.get(i), allowedAges.get(i));
@@ -59,17 +61,7 @@ public class Controller
         updateCustomersInShop();
         addCustomersToQueue();
         ArrayList<String> whiteList = getReg();
-
-        for(Iterator<Customer> it = customersInQueue.iterator(); it.hasNext();)   {
-            Customer customer = it.next();
-            String age = customer.getAge();
-            if(whiteList.contains(age))   {
-                supermarket.addCustomer(age);
-                customersInShop.add(customer);
-                it.remove();
-            }
-        }
-
+        enterCustomersToShop(whiteList);     
         exportState();
         moveTimestep();
     }
@@ -139,6 +131,19 @@ public class Controller
         }
         return regList;        
     }
+    
+    public void enterCustomersToShop(ArrayList<String> allowedAges)
+    {
+        for(Iterator<Customer> it = customersInQueue.iterator(); it.hasNext();)   {
+            Customer customer = it.next();
+            String age = customer.getAge();
+            if(allowedAges.contains(age))   {
+                supermarket.addCustomer(age);
+                customersInShop.add(customer);
+                it.remove();
+            }
+        }
+    }   
 
     public void exportState()   
     {
@@ -155,6 +160,44 @@ public class Controller
         time = (time + 1)%24;
         for(Customer customer : customersInShop)    {
             customer.decrementLife();
+        }
+    }
+    
+    // FOLLOWING FOR TEST PURPOSES ONLY
+    public void addToTimebounds(Tuple<Integer> timeBound)
+    {
+        timeBounds.add(timeBound);
+    }
+    
+    public void addToAllowedAges(String age)
+    {
+        allowedAges.add(age);
+    }
+    
+    public void addToQueue(Customer customer)
+    {
+        customersInQueue.add(customer);
+    }    
+    
+    public ArrayList<Customer> getCustomersInQueue()
+    {
+        return customersInQueue;
+    }
+    
+    public ArrayList<Customer> getCustomersInShop()
+    {
+        return customersInShop;
+    }    
+    
+    public void forceEntryRegUpdate()
+    {
+        if(timeBounds.size() == allowedAges.size()) {
+            for(int i = 0; i < timeBounds.size(); i++)   {
+                entryReg.put(timeBounds.get(i), allowedAges.get(i));
+            }
+        }
+        else    {
+            throw new IllegalStateException("Please ensure that each time bound entry has exactly 1 age group associated with it for that entry");
         }
     }
 
