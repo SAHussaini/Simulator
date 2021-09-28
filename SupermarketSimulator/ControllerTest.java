@@ -69,13 +69,13 @@ public class ControllerTest
         
         controller.addCustomersToQueue();   
         
-        ArrayList<Customer> t1Queue = controller.getCustomersInQueue();
+        int queueSize = controller.getCustomersInQueue().size();
         
         controller.enterCustomersToShop(allowedAges);
         
-        ArrayList<Customer> t1Shop = controller.getCustomersInShop();        
+        int shopSize = controller.getCustomersInShop().size();        
         
-        assertTrue(t1Queue.equals(t1Shop));
+        assertTrue(queueSize == shopSize);
     }
     
     @Test
@@ -124,7 +124,7 @@ public class ControllerTest
         
         controller.addToQueue(new Customer("Middle", "Female", 2));       
         controller.addToQueue(new Customer("Elder", "Female", 3)); 
-        
+        controller.enterCustomersToShop(allowedAges);
         controller.getCustomersInShop().get(0).decrementLife();
         controller.getCustomersInShop().get(0).decrementLife();
         controller.getCustomersInShop().get(1).decrementLife();
@@ -146,7 +146,8 @@ public class ControllerTest
         // Blackbox
         // 1 value and with Middle age group
         Controller controller = new Controller(10);
-        controller.addToTimebounds(controller.new Tuple(9, 11));
+        Controller.Tuple<Integer> timeboundMiddle = controller.new Tuple(9, 11);
+        controller.addToTimebounds(timeboundMiddle);
         controller.addToAllowedAges("Middle");
         controller.forceEntryRegUpdate();
 
@@ -169,7 +170,8 @@ public class ControllerTest
         assertEquals(true, controller.getReg().isEmpty());
         
         // 2 values with Middle and Elder age groups and distinct timebounds
-        controller.addToTimebounds(controller.new Tuple(15, 17));
+        Controller.Tuple<Integer> timeboundElder1 = controller.new Tuple(15, 17);
+        controller.addToTimebounds(timeboundElder1);
         controller.addToAllowedAges("Elder");
         controller.forceEntryRegUpdate();
         
@@ -210,9 +212,11 @@ public class ControllerTest
         assertEquals(true, controller.getReg().isEmpty());
         
         // 3 values with Young, Middle and Elder age groups and partially overlapping timebounds
-        controller.addToTimebounds(controller.new Tuple(10, 12));
+        Controller.Tuple<Integer> timeboundYoung = controller.new Tuple(10, 12);
+        Controller.Tuple<Integer> timeboundElder2 = controller.new Tuple(11, 13);
+        controller.addToTimebounds(timeboundYoung);
         controller.addToAllowedAges("Young");
-        controller.addToTimebounds(controller.new Tuple(11, 13));
+        controller.addToTimebounds(timeboundElder2);
         controller.addToAllowedAges("Elder");
         controller.forceEntryRegUpdate();
         
@@ -225,7 +229,7 @@ public class ControllerTest
         
         controller.setTime(10);
         assertEquals(2, controller.getReg().size());
-        assertEquals("Middle", controller.getReg().get(0));
+        assertEquals("Middle", controller.getReg().get(0));//its doing it like 1 here and 0 for young
         assertEquals("Young", controller.getReg().get(1));
         
         controller.setTime(11);
@@ -247,7 +251,8 @@ public class ControllerTest
         assertEquals(true, controller.getReg().isEmpty());   
         
         //Whitebox
-        controller.addToTimebounds(controller.new Tuple(3, 5));
+        Controller.Tuple<Integer> timebound = controller.new Tuple(3, 5);
+        controller.addToTimebounds(timebound);
         controller.getReg();
     }
     
@@ -257,7 +262,8 @@ public class ControllerTest
         // Blackbox
         // 1 value and with Middle age group
         Controller controller = new Controller(10);
-        controller.addToTimebounds(controller.new Tuple(23, 1));
+        Controller.Tuple<Integer> timeboundMiddle = controller.new Tuple(23, 1);
+        controller.addToTimebounds(timeboundMiddle);
         controller.addToAllowedAges("Middle");
         controller.forceEntryRegUpdate();
 
@@ -280,7 +286,8 @@ public class ControllerTest
         assertEquals(true, controller.getReg().isEmpty());
         
         // 2 values with Middle and Elder age groups and partially overlapping timebounds
-        controller.addToTimebounds(controller.new Tuple(20, 2));
+        Controller.Tuple<Integer> timeboundElder = controller.new Tuple(20, 2);
+        controller.addToTimebounds(timeboundElder);
         controller.addToAllowedAges("Elder");
         controller.forceEntryRegUpdate();       
         
@@ -314,7 +321,8 @@ public class ControllerTest
         assertEquals(true, controller.getReg().isEmpty());
         
         // 3 values with Young, Middle and Elder age groups and partially overlapping timebounds
-        controller.addToTimebounds(controller.new Tuple(21, 23));
+        Controller.Tuple<Integer> timeboundYoung = controller.new Tuple(21, 23);
+        controller.addToTimebounds(timeboundYoung);
         controller.addToAllowedAges("Young");
         controller.forceEntryRegUpdate();
         
@@ -373,7 +381,8 @@ public class ControllerTest
     public void testSimulation()
     {
         Controller controller = new Controller(10);
-        controller.addToTimebounds(controller.new Tuple(9, 11));
+        Controller.Tuple<Integer> timeboundElder = controller.new Tuple(9, 11);
+        controller.addToTimebounds(timeboundElder);
         controller.addToAllowedAges("Elder");
         controller.forceEntryRegUpdate();
         controller.setTime(8);
@@ -382,7 +391,7 @@ public class ControllerTest
         controller.addCustomersToQueue();          
         controller.enterCustomersToShop(controller.getReg());
         
-        assertEquals(0, controller.getCustomersInShop());
+        assertEquals(true, controller.getCustomersInShop().isEmpty());
         assertEquals(0, controller.getSupermarket().getYoung());
         assertEquals(0, controller.getSupermarket().getMiddle());
         assertEquals(0, controller.getSupermarket().getElder());
@@ -397,8 +406,8 @@ public class ControllerTest
         }
         controller.enterCustomersToShop(controller.getReg());
         
-        assertEquals(noElders, controller.getCustomersInShop());
-        assertEquals(noTotal - noElders, controller.getCustomersInQueue());        
+        assertEquals(noElders, controller.getCustomersInShop().size());
+        assertEquals(noTotal - noElders, controller.getCustomersInQueue().size());        
         
         controller.moveTimestep(); 
         assertEquals(1, controller.getCustomersInShop().get(0).getLife());
@@ -418,7 +427,7 @@ public class ControllerTest
         controller.exportState();        
         
         controller.moveTimestep();
-        assertEquals(0, controller.getCustomersInShop().size());
+        assertEquals(true, controller.getCustomersInShop().isEmpty());
         assertEquals(noTotal - noElders, controller.getCustomersInQueue()); 
     }
 }

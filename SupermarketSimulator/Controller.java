@@ -25,8 +25,8 @@ public class Controller
     public Controller(int marketCap)
     {
         entryReg = new HashMap<>();
-        ArrayList<Tuple<Integer>> timeBounds = new ArrayList<>();
-        ArrayList<String> allowedAges = new ArrayList<>();
+        timeBounds = new ArrayList<>();
+        allowedAges = new ArrayList<>();
         
         if(timeBounds.size() == allowedAges.size()) {
             for(int i = 0; i < timeBounds.size(); i++)   {
@@ -124,9 +124,9 @@ public class Controller
             for(Map.Entry<Tuple<Integer>, String> entry : entryReg.entrySet())
             {
                 Tuple<Integer> timeBound = entry.getKey();
-                String ageGroup = entry.getValue();
+                String ageGroup = entry.getValue(); // I think just force format to be that first is smaller than second.....
                 if ((timeBound.first() <= timeBound.second()) && (timeBound.first() <= time) && (time <= timeBound.second())) regList.add(ageGroup);
-                else if ((timeBound.second() <= timeBound.first()) && (timeBound.second() <= time) && (time <= timeBound.first())) regList.add(ageGroup);            
+                else if ((timeBound.second() <= timeBound.first()) && (timeBound.second() <= time) && (timeBound.first() <= time)) regList.add(ageGroup);            
             }
         }
         return regList;        
@@ -167,6 +167,7 @@ public class Controller
     // FOLLOWING FOR TEST PURPOSES ONLY
     public void addToTimebounds(Tuple<Integer> timeBound)
     {
+        System.out.println(timeBound.first() + ", " + timeBound.second());
         timeBounds.add(timeBound);
     }
     
