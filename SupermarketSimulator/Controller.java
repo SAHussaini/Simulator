@@ -149,6 +149,7 @@ public class Controller
     {
         try {
             writer.write(time + "," + supermarket.getYoung() + "," + supermarket.getMiddle() + "," + supermarket.getElder() + "," + supermarket.isFull() + "\n");
+            writer.close();
         }
         catch (IOException e)   {
             System.out.println("Cannot write to CSV file!");
@@ -179,6 +180,11 @@ public class Controller
         customersInQueue.add(customer);
     }    
     
+    public void addToShop(Customer customer)
+    {
+        customersInShop.add(customer);
+    }    
+    
     public ArrayList<Customer> getCustomersInQueue()
     {
         return customersInQueue;
@@ -200,7 +206,23 @@ public class Controller
             throw new IllegalStateException("Please ensure that each time bound entry has exactly 1 age group associated with it for that entry");
         }
     }
-
+    
+    public void setTime(int t)
+    {
+        time = t;
+    }
+    
+    public int getTime()
+    {
+        return time;
+    }
+    
+    public Supermarket getSupermarket()
+    {
+        return supermarket;
+    }
+    
+    //
     public class Tuple<T> {
         private T x;
         private T y;
