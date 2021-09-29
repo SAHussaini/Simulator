@@ -56,7 +56,9 @@ public class ControllerTest
         
         ArrayList<Customer> t2Queue = controller.getCustomersInQueue();
         
-        assertTrue(t2Queue.size() >= t1Queue.size());               
+        assertTrue(t2Queue.size() >= t1Queue.size());   
+        
+        System.out.println(t1Queue.size() + ", " + t2Queue.size());
     }
     
     @Test
@@ -76,6 +78,7 @@ public class ControllerTest
         int shopSize = controller.getCustomersInShop().size();        
         
         assertTrue(queueSize == shopSize);
+        System.out.println(queueSize + ", " + shopSize);
     }
     
     @Test
@@ -141,7 +144,7 @@ public class ControllerTest
     }
     
     @Test
-    public void testGetRegInbound()
+    public void testGetReg()
     {
         // Blackbox
         // 1 value and with Middle age group
@@ -324,6 +327,7 @@ public class ControllerTest
         }
         
         System.out.println(noEldersInShop);
-        controller.exportState();        
+        controller.setTime(22);
+        controller.moveTimestep();
     }
 }

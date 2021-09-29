@@ -141,8 +141,7 @@ public class Controller
     public void exportState()   
     {
         try {
-            writer.write(time + "," + supermarket.getYoung() + "," + supermarket.getMiddle() + "," + supermarket.getElder() + "," + supermarket.isFull() + "\n");
-            writer.close();
+            writer.write(time + "," + supermarket.getYoung() + "," + supermarket.getMiddle() + "," + supermarket.getElder() + "," + supermarket.isFull() + "\n");            
         }
         catch (IOException e)   {
             System.out.println("Cannot write to CSV file!");
@@ -154,6 +153,10 @@ public class Controller
         time = (time + 1)%24;
         for(Customer customer : customersInShop)    {
             customer.decrementLife();
+        }
+        if(time == 23)  {
+            try {writer.close();}
+            catch(IOException e) {System.out.println("Something went wrong when exporting data to CSV file.");}
         }
     }
     
@@ -214,6 +217,12 @@ public class Controller
     public Supermarket getSupermarket()
     {
         return supermarket;
+    }
+    
+    public void closeWriter()
+    {
+        try {writer.close();}
+        catch (IOException e) {System.out.println("Something went wrong when closing the CSV writer.");}
     }
     
     //
