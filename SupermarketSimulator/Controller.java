@@ -15,8 +15,8 @@ public class Controller
     private ArrayList<Customer> customersInShop;
     private int time;
     private HashMap<Tuple<Integer>, String> entryReg;
-    ArrayList<Tuple<Integer>> timeBounds;//
-    ArrayList<String> allowedAges;// ONLY LIKE THIS BECAUSE OF BLUEJ GUI
+    private ArrayList<Tuple<Integer>> timeBounds;//
+    private ArrayList<String> allowedAges;// ONLY LIKE THIS BECAUSE OF BLUEJ GUI
     private FileWriter writer;
 
     /**
@@ -50,12 +50,6 @@ public class Controller
         }
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
     public void simulate()
     {
         updateCustomersInShop();
@@ -124,9 +118,8 @@ public class Controller
             for(Map.Entry<Tuple<Integer>, String> entry : entryReg.entrySet())
             {
                 Tuple<Integer> timeBound = entry.getKey();
-                String ageGroup = entry.getValue(); // I think just force format to be that first is smaller than second.....
-                if ((timeBound.first() <= timeBound.second()) && (timeBound.first() <= time) && (time <= timeBound.second())) regList.add(ageGroup);
-                else if ((timeBound.second() <= timeBound.first()) && (timeBound.second() <= time) && (timeBound.first() <= time)) regList.add(ageGroup);            
+                String ageGroup = entry.getValue();
+                if ((timeBound.first() <= timeBound.second()) && (timeBound.first() <= time) && (time <= timeBound.second())) regList.add(ageGroup);                
             }
         }
         return regList;        
