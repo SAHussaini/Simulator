@@ -17,7 +17,6 @@ public class Controller
     private HashMap<Tuple<Integer>, String> entryReg;
     private ArrayList<Tuple<Integer>> timeBounds;//
     private ArrayList<String> allowedAges;// ONLY LIKE THIS BECAUSE OF BLUEJ GUI
-    private FileWriter writer;
 
     /**
      * Constructor for objects of class Controller
@@ -27,6 +26,8 @@ public class Controller
         entryReg = new HashMap<>();
         timeBounds = new ArrayList<>();
         allowedAges = new ArrayList<>();
+        //timeBounds.add(this.new Tuple(3, 12));
+        //allowedAges.add("Young");
         
         if(timeBounds.size() == allowedAges.size()) {
             for(int i = 0; i < timeBounds.size(); i++)   {
@@ -41,13 +42,6 @@ public class Controller
         customersInQueue = new ArrayList<Customer>();
         customersInShop = new ArrayList<Customer>();
         time = 0;
-        try {
-            writer = new FileWriter("supermarket_simulation.csv");
-            writer.write("Time, YoungNo., MiddleNo., ElderNo., Total\n");
-        }
-        catch(IOException e)    {
-            System.out.println("Cannot create CSV file!");
-        }
     }
 
     public void simulate()
@@ -56,7 +50,6 @@ public class Controller
         addCustomersToQueue();
         ArrayList<String> whiteList = getReg();
         enterCustomersToShop(whiteList);     
-        exportState();
         moveTimestep();
     }
 
@@ -141,10 +134,13 @@ public class Controller
     public void exportState()   
     {
         try {
+            FileWriter writer = new FileWriter("supermarket_simulation.csv");
+            writer.write("Time, YoungNo., MiddleNo., ElderNo., Full\n");
             writer.write(time + "," + supermarket.getYoung() + "," + supermarket.getMiddle() + "," + supermarket.getElder() + "," + supermarket.isFull() + "\n");            
+            writer.close();
         }
-        catch (IOException e)   {
-            System.out.println("Cannot write to CSV file!");
+        catch(IOException e)    {
+            System.out.println("Cannot create CSV file!");
         }
     }
 
@@ -153,10 +149,6 @@ public class Controller
         time = (time + 1)%24;
         for(Customer customer : customersInShop)    {
             customer.decrementLife();
-        }
-        if(time == 23)  {
-            try {writer.close();}
-            catch(IOException e) {System.out.println("Something went wrong when exporting data to CSV file.");}
         }
     }
     
@@ -217,13 +209,7 @@ public class Controller
     public Supermarket getSupermarket()
     {
         return supermarket;
-    }
-    
-    public void closeWriter()
-    {
-        try {writer.close();}
-        catch (IOException e) {System.out.println("Something went wrong when closing the CSV writer.");}
-    }
+    }    
     
     //
     public class Tuple<T> {

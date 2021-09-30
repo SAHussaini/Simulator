@@ -327,7 +327,6 @@ public class ControllerTest
         }
         
         System.out.println(noEldersInShop);
-        controller.setTime(22);
-        controller.moveTimestep();
+        controller.exportState();
     }
 }
