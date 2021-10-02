@@ -5,6 +5,8 @@ import java.io.*;
  * This is the Controller class. 
  * It creates a domain instance and handles all the logic behind the simulation. 
  * It does this by manipulating the other classes and via specialised methods to execute the simulation.
+ * 
+ * This class also nests within it the Tuple class (though this design needs to be refactored considering the high-level functionality of the Tuple class).
  *
  * @author (Syed Hussaini)
  */

@@ -7,8 +7,7 @@ import java.util.*;
 /**
  * The test class ControllerTest.
  *
- * @author  (your name)
- * @version (a version number or a date)
+ * @author  (Syed Hussaini)
  */
 public class ControllerTest
 {

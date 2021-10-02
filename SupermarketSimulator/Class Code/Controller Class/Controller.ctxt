@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Controller
-comment0.text=\r\n\ This\ is\ the\ Controller\ class.\ \r\n\ It\ creates\ a\ domain\ instance\ and\ handles\ all\ the\ logic\ behind\ the\ simulation.\ \r\n\ It\ does\ this\ by\ manipulating\ the\ other\ classes\ and\ via\ specialised\ methods\ to\ execute\ the\ simulation.\r\n\r\n\ @author\ (Syed\ Hussaini)\r\n
+comment0.text=\r\n\ This\ is\ the\ Controller\ class.\ \r\n\ It\ creates\ a\ domain\ instance\ and\ handles\ all\ the\ logic\ behind\ the\ simulation.\ \r\n\ It\ does\ this\ by\ manipulating\ the\ other\ classes\ and\ via\ specialised\ methods\ to\ execute\ the\ simulation.\r\n\ \r\n\ This\ class\ also\ nests\ within\ it\ the\ Tuple\ class\ (though\ this\ design\ needs\ to\ be\ refactored\ considering\ the\ high-level\ functionality\ of\ the\ Tuple\ class).\r\n\r\n\ @author\ (Syed\ Hussaini)\r\n
 comment1.params=marketCap
 comment1.target=Controller(int)
 comment1.text=\r\n\ Create\ a\ Controller\ object.\ \r\n\ This\ also\ instantiates\ all\ instance\ variables\ to\ default\ values\ and\ creates\ a\ supermarket\ with\ the\ given\ capacity.\r\n\ Additionally,\ we\ hardcode\ our\ entry\ regulations\ in\ this\ constructor\ and\ parse\ them\ as\ entry\ regulations\ into\ our\ entry\ regulations\ map\ as\ well.\r\n\ \r\n\ @param\ marketCap\ The\ maximum\ capacity\ for\ this\ controller's\ supermarket\ object.\r\n
